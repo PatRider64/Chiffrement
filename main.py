@@ -2,6 +2,7 @@ from cryptography.hazmat.primitives.ciphers.aead import AESGCM
 from cryptography.fernet import Fernet
 import base64
 import os
+import pathlib
 from pathlib import Path
 
 def encrypt_message(message):
@@ -43,6 +44,33 @@ def encrypt_file(path_file):
         return
 
     return key
+
+def decrypt_file(path_file, key):
+    if pathlib.Path(path_file).suffix != ".encrypted":
+        print("Erreur: Le fichier doit être un fichier ENCRYPTED")
+        return
+    
+    filename = Path(path_file).resolve()
+    f = Fernet(key)
+
+    try:
+        with open(filename, "rb") as encrypt_file:
+            encrypted_data = encrypt_file.read()
+            decrypted_data = f.decrypt(encrypted_data)
+    except Exception as e:
+        print(f"Erreur lors de la lecture du fichier : {e}")
+        return
+
+    decrypted_file_path = str(Path.home()) + r"\Downloads\\" + os.path.basename(path_file).removesuffix(".encrypted")
+
+    try:
+        with open(decrypted_file_path, "wb") as decrypted_file:
+            decrypted_file.write(decrypted_data)
+    except Exception as e:
+        print(f"Erreur lors du déchiffrement du fichier : {e}")
+        return
+    
+    print("Votre fichier déchiffré est maintenant téléchargé.")
 
 def main_menu():
     print("Choisissez une option :")
@@ -89,3 +117,7 @@ elif choice == "2":
         if key:
             print(f"Clé : {base64.b64encode(key).decode()}")
             print("Votre fichier chiffré est maintenant téléchargé.")
+    elif file_choice == "2":
+        path_file = input("Chemin du fichier encrypté : ")
+        key = base64.b64decode(input("Clé : "))
+        decrypt_file(path_file, key)
