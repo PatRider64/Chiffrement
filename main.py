@@ -19,11 +19,6 @@ class Home(QWidget):
         self.title.setStyleSheet("font-size: 24px; font-weight: bold;")
         self.title.setAlignment(Qt.AlignCenter)
 
-        self.encrypt_message_label = QLabel('Encrypter un message')
-        self.decrypt_message_label = QLabel('Décrypter un message')
-        self.encrypt_file_label = QLabel('Encrypter un fichier')
-        self.decrypt_file_label = QLabel('Décrypter un fichier')
-
         self.message_encrypt_message_label = QLabel('Message à encrypter')
         self.message_encrypt_message_text_box = QLineEdit(self)
         self.message_encrypt_button = QPushButton('Encrypter', self)
@@ -73,7 +68,6 @@ class Home(QWidget):
 
         self.master.addWidget(self.title)
 
-        encrypt_message_layout.addWidget(self.encrypt_message_label)
         encrypt_message_layout.addWidget(self.message_encrypt_message_text_box)
         encrypt_message_layout.addWidget(self.message_encrypt_button)
         encrypt_message_layout.addWidget(self.message_encrypt_result_message_label)
@@ -83,7 +77,6 @@ class Home(QWidget):
         encrypt_message_layout.addWidget(self.message_encrypt_result_nonce_label)
         encrypt_message_layout.addWidget(self.message_encrypt_result_nonce_text_box)
 
-        decrypt_message_layout.addWidget(self.decrypt_message_label)
         decrypt_message_layout.addWidget(self.message_decrypt_message_label)
         decrypt_message_layout.addWidget(self.message_decrypt_message_text_box)
         decrypt_message_layout.addWidget(self.message_decrypt_key_label)
@@ -94,24 +87,34 @@ class Home(QWidget):
         decrypt_message_layout.addWidget(self.message_decrypt_result_label)
         decrypt_message_layout.addWidget(self.message_decrypt_result_text_box)
 
-        encrypt_file_layout.addWidget(self.encrypt_file_label)
         encrypt_file_layout.addWidget(self.encrypt_file_selector_button)
         encrypt_file_layout.addWidget(self.encrypt_file_path_box)
         encrypt_file_layout.addWidget(self.encrypt_file_button)
         encrypt_file_layout.addWidget(self.encrypt_file_key_label)
         encrypt_file_layout.addWidget(self.encrypt_file_key_text_box)
 
-        decrypt_file_layout.addWidget(self.decrypt_file_label)
         decrypt_file_layout.addWidget(self.decrypt_file_selector_button)
-        encrypt_file_layout.addWidget(self.decrypt_file_path_box)
+        decrypt_file_layout.addWidget(self.decrypt_file_path_box)
         decrypt_file_layout.addWidget(self.decrypt_file_button)
         decrypt_file_layout.addWidget(self.decrypt_file_key_label)
         decrypt_file_layout.addWidget(self.decrypt_file_key_text_box)
 
-        self.master.addLayout(encrypt_message_layout)
-        self.master.addLayout(decrypt_message_layout)
-        self.master.addLayout(encrypt_file_layout)
-        self.master.addLayout(decrypt_file_layout)
+        encrypt_message_group = QGroupBox("Encrypter un message")
+        encrypt_message_group.setLayout(encrypt_message_layout)
+
+        decrypt_message_group = QGroupBox("Décrypter un message")
+        decrypt_message_group.setLayout(decrypt_message_layout)
+
+        encrypt_file_group = QGroupBox("Encrypter un fichier")
+        encrypt_file_group.setLayout(encrypt_file_layout)
+
+        decrypt_file_group = QGroupBox("Décrypter un fichier")
+        decrypt_file_group.setLayout(decrypt_file_layout)
+
+        self.master.addWidget(encrypt_message_group)
+        self.master.addWidget(decrypt_message_group)
+        self.master.addWidget(encrypt_file_group)
+        self.master.addWidget(decrypt_file_group)
 
         self.setLayout(self.master)
         self.show()
